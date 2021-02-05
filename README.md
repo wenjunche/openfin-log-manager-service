@@ -1,0 +1,1 @@
+# openfin-log-manager-service

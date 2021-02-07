@@ -17,7 +17,7 @@ const upload = multer({ storage: multer.memoryStorage()});
 // routes
 router.post(
   "/api/v1/logs",
-  upload.single("logFile"),
+  upload.single("logFile"),  // multer middleware for logFile
   async (req: express.Request, res: express.Response) => {
 
     const licenseKey = req.header("X-LICENSE-KEY");
@@ -27,10 +27,10 @@ router.post(
     }
     const encrypted_aes_key = req.body.encryptedAesKey;
     const encrypted_aes_iv = req.body.encryptedAesIv;
-    console.log('encrypted_aes_key', encrypted_aes_key);
-    console.log('encrypted_aes_iv', encrypted_aes_iv);
+    // decrypt both decrypted_aes_key and decrypted_aes_iv first
     const decrypted_aes_key = crypto.privateDecrypt(PRIVATE_KEY, Buffer.from(encrypted_aes_key, 'hex'));
     const decrypted_aes_iv = crypto.privateDecrypt(PRIVATE_KEY, Buffer.from(encrypted_aes_iv, 'hex'));
+    // then decrypt file content with decrypted_aes_key and decrypted_aes_iv
     const decipher = crypto.createDecipheriv('aes-256-cbc', decrypted_aes_key, decrypted_aes_iv);
     let zip = decipher.update(req.file.buffer);
     zip = Buffer.concat([zip, decipher.final()]);
@@ -49,5 +49,5 @@ if (require.main === module) {
     app.listen(PORT, () => {
       console.log(`listening on port ${PORT}`);
     });
-  }
+}
   

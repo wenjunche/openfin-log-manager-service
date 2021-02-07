@@ -1,6 +1,6 @@
 # openfin-log-manager-service
 
-This repo is an example of node service that supports OpenFin application log management.  More detauls about log managemnent can be found [here](https://developers.openfin.co/docs/log-management)
+This repo is an example of node service that supports OpenFin application log management.  More details about log managemnent can be found [here](https://developers.openfin.co/docs/log-management)
 
 ## Installation and build
 

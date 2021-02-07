@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "outDir": "build",
+    "noImplicitAny": true,
+    "alwaysStrict": true,
+    "allowUnusedLabels": false,
+    "sourceMap": true
+  },
+  "include": ["src/**/*.ts"],
+  "no-shadowed-variable": true
+}

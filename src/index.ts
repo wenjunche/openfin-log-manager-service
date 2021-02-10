@@ -4,6 +4,7 @@ import * as fs from "fs";
 
 import * as express from "express";
 import * as multer from "multer";
+import * as uuid from "uuid";
 import { PRIVATE_KEY } from "./rsakey";
 
 const PORT = 8080;
@@ -19,12 +20,6 @@ router.post(
   "/api/v1/logs",
   upload.single("logFile"),  // multer middleware for logFile
   async (req: express.Request, res: express.Response) => {
-
-    const licenseKey = req.header("X-LICENSE-KEY");
-    if (!licenseKey) {
-      console.warn("Missing X-LICENSE-KEY in header");
-      throw new Error("Missing X-LICENSE-KEY in header");
-    }
     const encrypted_aes_key = req.body.encryptedAesKey;
     const encrypted_aes_iv = req.body.encryptedAesIv;
     // decrypt both decrypted_aes_key and decrypted_aes_iv first
@@ -38,9 +33,8 @@ router.post(
     fs.writeFileSync("log.zip", zip);
 
     console.log("Successfully uploaded log", req.file.fieldname, "size", req.file.size);
-
-    return res.status(200);
-    }
+    return res.json({response: {id: uuid.v4()}});
+  }
 );
 
 app.use(router);
